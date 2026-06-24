@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 
 // 左側サイドバー用のフェチ属性マスター
@@ -56,7 +56,7 @@ const MOCK_PRODUCTS = [
   }
 ];
 
-export default function SearchResultsPage() {
+function SearchResultsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -334,5 +334,19 @@ export default function SearchResultsPage() {
 
       </div>
     </main>
+  );
+}
+
+export default function SearchResultsPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-slate-900 text-slate-100 flex items-center justify-center">
+          <p className="text-sm text-slate-400">検索条件を読み込んでいます...</p>
+        </main>
+      }
+    >
+      <SearchResultsContent />
+    </Suspense>
   );
 }
